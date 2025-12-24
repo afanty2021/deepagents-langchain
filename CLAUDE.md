@@ -1,6 +1,6 @@
 # DeepAgents LangChain - AI Agent 框架
 
-> 更新时间：2025-12-08
+> 更新时间：2025-12-24
 
 DeepAgents 是一个基于 LangGraph 构建的开源 AI Agent 框架，专为处理长期任务而设计。它提供了规划、文件系统访问和子代理委派等核心能力，使 AI 能够处理复杂的多步骤工作流程。
 
@@ -23,64 +23,83 @@ graph TD
     A --> C["CLI工具 (libs/deepagents-cli)"];
     A --> D["示例技能 (examples/skills)"];
     A --> E["Harbor集成 (libs/harbor)"];
+    A --> F["ACP协议 (libs/acp)"];
 
-    B --> F["后端系统 (backends/)"];
-    B --> G["中间件 (middleware/)"];
-    B --> H["图构建器 (graph.py)"];
+    B --> G["后端系统 (backends/)"];
+    B --> H["中间件 (middleware/)"];
+    B --> I["图构建器 (graph.py)"];
 
-    F --> I["StateBackend"];
-    F --> J["FilesystemBackend"];
-    F --> K["StoreBackend"];
-    F --> L["CompositeBackend"];
-    F --> M["SandboxBackend"];
+    G --> J["StateBackend"];
+    G --> K["FilesystemBackend"];
+    G --> L["StoreBackend"];
+    G --> M["CompositeBackend"];
+    G --> N["SandboxBackend"];
 
-    G --> N["FilesystemMiddleware"];
-    G --> O["SubAgentMiddleware"];
-    G --> P["PatchToolCallsMiddleware"];
+    H --> O["FilesystemMiddleware"];
+    H --> P["SubAgentMiddleware"];
+    H --> Q["PatchToolCallsMiddleware"];
 
-    C --> Q["交互式CLI"];
-    C --> R["命令管理"];
-    C --> S["集成支持"];
-    C --> T["技能系统"];
+    C --> R["交互式CLI"];
+    C --> S["命令管理"];
+    C --> T["集成支持"];
+    C --> U["技能系统"];
+    C --> V["图像处理"];
 
-    D --> U["arXiv搜索"];
-    D --> V["网络研究"];
-    D --> W["文档查询"];
+    D --> W["arXiv搜索"];
+    D --> X["网络研究"];
+    D --> Y["文档查询"];
 
-    E --> X["HarborSandbox"];
-    E --> Y["DeepAgentsWrapper"];
-    E --> Z["LangSmith追踪"];
+    E --> Z["HarborSandbox"];
+    E --> AA["DeepAgentsWrapper"];
+    E --> AB["LangSmith追踪"];
+
+    F --> AC["Agent Client Protocol"];
+    F --> AD["标准化上下文管理"];
 
     click B "./libs/deepagents/CLAUDE.md" "查看核心库文档"
     click C "./libs/deepagents-cli/CLAUDE.md" "查看CLI工具文档"
     click D "./examples/CLAUDE.md" "查看示例文档"
     click E "./libs/harbor/README.md" "查看Harbor集成文档"
+    click F "./libs/acp/README.md" "查看ACP文档"
 ```
 
 ## 模块索引
 
-| 模块 | 路径 | 语言 | 职责 | 状态 |
-|------|------|------|------|------|
-| **核心库** | `libs/deepagents` | Python | 提供Agent创建、中间件和后端系统 | ✅ 完整 |
-| **CLI工具** | `libs/deepagents-cli` | Python | 命令行界面和交互式体验 | ✅ 完整 |
-| **示例技能** | `examples/skills` | Python | 预构建技能模板和示例 | ✅ 完整 |
-| **Harbor集成** | `libs/harbor` | Python | Terminal Bench 2.0评估框架集成 | ✅ 新增 |
+| 模块 | 路径 | 语言 | 职责 | 状态 | 版本 |
+|------|------|------|------|------|------|
+| **核心库** | `libs/deepagents` | Python | 提供Agent创建、中间件和后端系统 | ✅ 完整 | v0.3.1 |
+| **CLI工具** | `libs/deepagents-cli` | Python | 命令行界面和交互式体验 | ✅ 完整 | v0.0.12 |
+| **示例技能** | `examples/skills` | Python | 预构建技能模板和示例 | ✅ 完整 | - |
+| **Harbor集成** | `libs/harbor` | Python | Terminal Bench 2.0评估框架集成 | ✅ 完整 | - |
+| **ACP协议** | `libs/acp` | Python | Agent Client Protocol标准化支持 | 🚧 开发中 | v0.0.1 |
 
 ## ✨ 最新功能亮点
 
-### 1. Harbor 评估集成 (新增)
+### 1. ACP 协议支持 (新增)
+- **Agent Client Protocol 集成** - 标准化的Agent客户端通信协议
+- **上下文管理** - 统一的上下文传递和管理机制
+- **Python 3.14+ 支持** - 面向未来的Python版本兼容
+- **独立服务器** - `deepacp` 命令行工具用于启动ACP服务器
+
+### 2. CLI 图像处理功能 (新增)
+- **剪贴板图像读取** - 支持从剪贴板直接粘贴图像（macOS）
+- **多格式支持** - PNG、JPEG、TIFF等格式自动转换
+- **多模态消息** - 与LangChain多模态消息格式完全兼容
+- **智能降级** - 优先使用pngpaste，降级到osascript内置工具
+
+### 3. Harbor 评估集成
 - **Terminal Bench 2.0 支持** - 在90+个挑战性任务上评估Agent性能
 - **多沙箱环境** - Docker、Daytona、Modal、Runloop等环境支持
 - **LangSmith集成** - 完整的轨迹追踪和性能分析
 - **奖励评分** - 0.0-1.0范围的量化评估
 
-### 2. 全面异步支持
+### 4. 全面异步支持
 - **异步后端协议** - 所有后端操作支持async/await
 - **并发执行** - 子代理可并行执行任务
 - **非阻塞I/O** - 文件操作和命令执行不阻塞主流程
 - **性能提升** - 显著降低响应延迟
 
-### 3. CLI工具增强
+### 5. CLI工具增强
 - **交互式界面** - Rich支持的精美终端界面
 - **技能系统** - 可扩展的技能插件架构
 - **多沙箱支持** - 集成Daytona、Modal、Runloop
@@ -95,16 +114,20 @@ graph TD
 git clone https://github.com/langchain-ai/deepagents-langchain
 cd deepagents-langchain
 
-# 安装核心库
+# 安装核心库 (v0.3.1)
 cd libs/deepagents
 pip install -e .
 
-# 安装CLI工具（包含额外依赖）
+# 安装CLI工具（包含额外依赖）(v0.0.12)
 cd ../deepagents-cli
 pip install -e .
 
 # 安装Harbor集成（可选）
 cd ../harbor
+pip install -e .
+
+# 安装ACP协议支持（可选，Python 3.14+）
+cd ../acp
 pip install -e .
 ```
 
@@ -161,6 +184,16 @@ make run-terminal-bench-daytona   # 云端大规模评估
 make run-terminal-bench-modal     # Modal云函数
 ```
 
+### ACP服务器使用
+
+```bash
+# 启动ACP服务器（需要Python 3.14+）
+deepacp
+
+# ACP服务器将提供标准的Agent Client Protocol接口
+# 可用于与其他ACP兼容的Agent进行通信
+```
+
 ### 开发环境设置
 
 ```bash
@@ -171,21 +204,26 @@ cd ../deepagents-cli
 pip install -e ".[dev,tests]"
 cd ../harbor
 pip install -e ".[test]"
+cd ../acp
+pip install -e ".[dev,test]"
 
 # 运行测试
 pytest libs/deepagents/tests/
 pytest libs/deepagents-cli/tests/
 pytest libs/harbor/tests/
+pytest libs/acp/tests/
 
 # 代码检查
 ruff check libs/deepagents/
 ruff check libs/deepagents-cli/
 ruff check libs/harbor/
+ruff check libs/acp/
 
 # 格式化代码
 ruff format libs/deepagents/
 ruff format libs/deepagents-cli/
 ruff format libs/harbor/
+ruff format libs/acp/
 ```
 
 ## 测试策略
@@ -210,20 +248,24 @@ ruff format libs/harbor/
   - 中间件测试：包含异步版本
   - 集成测试：完整工作流验证
 - `libs/deepagents-cli/tests/` - CLI工具测试（10+文件）
-  - 单元测试：命令处理、配置管理
+  - 单元测试：命令处理、配置管理、图像处理
   - 集成测试：CLI交互和沙箱操作
   - 基准测试：任务执行性能
 - `libs/harbor/tests/` - Harbor集成测试
   - 单元测试：导入和基础功能
   - 集成测试：与Harbor框架的完整集成
+- `libs/acp/tests/` - ACP协议测试
+  - 单元测试：ACP服务器功能
+  - 集成测试：Agent Client Protocol兼容性
 
 ## 编码规范
 
-- **Python版本**: >= 3.11 (Harbor要求 >= 3.12)
+- **Python版本**: >= 3.11 (核心库、CLI、Harbor)，>= 3.14 (ACP)
 - **代码格式化**: 使用 ruff
 - **类型检查**: 使用 mypy，严格模式
 - **文档**: Google风格docstring
 - **行长度**: 150字符（核心库）、100字符（CLI和Harbor）
+- **依赖锁定**: 使用 uv.lock 进行现代化依赖管理
 
 ### 主要规则
 
@@ -266,6 +308,8 @@ DeepAgents 专为以下场景优化：
 - **Memory（记忆）** - 跨会话持久化存储
 - **Skills（技能）** - 可扩展的功能插件
 - **Harbor** - 第三方评估框架集成
+- **ACP** - Agent Client Protocol标准化通信
+- **多模态支持** - 图像处理和多模态消息
 
 ### 异步编程最佳实践
 
@@ -299,6 +343,20 @@ DeepAgents 专为以下场景优化：
 - **[LangSmith追踪](https://smith.langchain.com)**
 
 ## 变更记录 (Changelog)
+
+### 2025-12-24 - 项目文档更新
+- 📚 **上下文文档更新** - 更新项目版本信息（核心库v0.3.1，CLI v0.0.12）
+- 🆕 **ACP模块文档** - 添加Agent Client Protocol模块说明
+- 🖼️ **图像处理文档** - 记录CLI新增的剪贴板图像处理功能
+- 🔧 **依赖管理说明** - 更新uv.lock依赖锁定机制说明
+- 📊 **模块索引完善** - 添加版本号和状态标签
+
+### 2025-12-22 - Git同步更新
+- 🔄 **upstream/master合并** - 成功合并langchain-ai/deepagents upstream/master更新
+- 🆕 **Advanced Context Protocol (ACP)支持** - 新增libs/acp/模块，提供标准化上下文管理
+- 🖼️ **图像处理功能** - 新增image_utils.py模块，支持图像分析和处理
+- 🔧 **依赖管理升级** - 使用uv.lock进行现代化依赖锁定
+- 🧪 **测试覆盖增强** - 新增ACP和CLI图像处理的完整测试套件
 
 ### 2025-12-08 - 重大更新
 - 🆕 **新增Harbor模块** - Terminal Bench 2.0评估框架集成
