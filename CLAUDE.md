@@ -1,6 +1,6 @@
 # DeepAgents LangChain - AI Agent 框架
 
-> 更新时间：2025-12-24
+> 更新时间：2026-01-10
 
 DeepAgents 是一个基于 LangGraph 构建的开源 AI Agent 框架，专为处理长期任务而设计。它提供了规划、文件系统访问和子代理委派等核心能力，使 AI 能够处理复杂的多步骤工作流程。
 
@@ -22,88 +22,142 @@ graph TD
     A["DeepAgents"] --> B["核心库 (libs/deepagents)"];
     A --> C["CLI工具 (libs/deepagents-cli)"];
     A --> D["示例技能 (examples/skills)"];
-    A --> E["Harbor集成 (libs/harbor)"];
-    A --> F["ACP协议 (libs/acp)"];
+    A --> E["Ralph模式 (examples/ralph_mode)"];
+    A --> F["Harbor集成 (libs/harbor)"];
+    A --> G["ACP协议 (libs/acp)"];
 
-    B --> G["后端系统 (backends/)"];
-    B --> H["中间件 (middleware/)"];
-    B --> I["图构建器 (graph.py)"];
+    B --> H["后端系统 (backends/)"];
+    B --> I["中间件 (middleware/)"];
+    B --> J["图构建器 (graph.py)"];
 
-    G --> J["StateBackend"];
-    G --> K["FilesystemBackend"];
-    G --> L["StoreBackend"];
-    G --> M["CompositeBackend"];
-    G --> N["SandboxBackend"];
+    H --> K["StateBackend"];
+    H --> L["FilesystemBackend"];
+    H --> M["StoreBackend"];
+    H --> N["CompositeBackend"];
+    H --> O["SandboxBackend"];
 
-    H --> O["FilesystemMiddleware"];
-    H --> P["SubAgentMiddleware"];
-    H --> Q["PatchToolCallsMiddleware"];
+    I --> P["FilesystemMiddleware"];
+    I --> Q["SubAgentMiddleware"];
+    I --> R["PatchToolCallsMiddleware"];
+    I --> S["MemoryMiddleware"];
+    I --> T["SkillsMiddleware"];
 
-    C --> R["交互式CLI"];
-    C --> S["命令管理"];
-    C --> T["集成支持"];
-    C --> U["技能系统"];
-    C --> V["图像处理"];
+    C --> U["Textual UI"];
+    C --> V["会话管理"];
+    C --> W["命令管理"];
+    C --> X["集成支持"];
+    C --> Y["技能系统"];
+    C --> Z["图像处理"];
+    C --> AA["Widgets组件"];
 
-    D --> W["arXiv搜索"];
-    D --> X["网络研究"];
-    D --> Y["文档查询"];
+    AA --> AB["approval"];
+    AA --> AC["autocomplete"];
+    AA --> AD["chat_input"];
+    AA --> AE["diff"];
+    AA --> AF["history"];
+    AA --> AG["loading"];
+    AA --> AH["messages"];
+    AA --> AI["status"];
+    AA --> AJ["tool_renderers"];
+    AA --> AK["tool_widgets"];
+    AA --> AL["welcome"];
 
-    E --> Z["HarborSandbox"];
-    E --> AA["DeepAgentsWrapper"];
-    E --> AB["LangSmith追踪"];
+    D --> AM["arXiv搜索"];
+    D --> AN["网络研究"];
+    D --> AO["文档查询"];
 
-    F --> AC["Agent Client Protocol"];
-    F --> AD["标准化上下文管理"];
+    E --> AP["自主循环"];
+    E --> AQ["上下文简化"];
+    E --> AR["文件系统记忆"];
+
+    F --> AS["HarborSandbox"];
+    F --> AT["DeepAgentsWrapper"];
+    F --> AU["LangSmith追踪"];
+
+    G --> AV["Agent Client Protocol"];
+    G --> AW["标准化上下文管理"];
 
     click B "./libs/deepagents/CLAUDE.md" "查看核心库文档"
     click C "./libs/deepagents-cli/CLAUDE.md" "查看CLI工具文档"
     click D "./examples/CLAUDE.md" "查看示例文档"
-    click E "./libs/harbor/README.md" "查看Harbor集成文档"
-    click F "./libs/acp/README.md" "查看ACP文档"
+    click F "./libs/harbor/README.md" "查看Harbor集成文档"
+    click G "./libs/acp/README.md" "查看ACP文档"
 ```
 
 ## 模块索引
 
 | 模块 | 路径 | 语言 | 职责 | 状态 | 版本 |
 |------|------|------|------|------|------|
-| **核心库** | `libs/deepagents` | Python | 提供Agent创建、中间件和后端系统 | ✅ 完整 | v0.3.1 |
+| **核心库** | `libs/deepagents` | Python | 提供Agent创建、中间件和后端系统 | ✅ 完整 | v0.3.5 |
 | **CLI工具** | `libs/deepagents-cli` | Python | 命令行界面和交互式体验 | ✅ 完整 | v0.0.12 |
 | **示例技能** | `examples/skills` | Python | 预构建技能模板和示例 | ✅ 完整 | - |
+| **Ralph模式** | `examples/ralph_mode` | Python | 自主循环代理模式示例 | ✅ 完整 | - |
 | **Harbor集成** | `libs/harbor` | Python | Terminal Bench 2.0评估框架集成 | ✅ 完整 | - |
-| **ACP协议** | `libs/acp` | Python | Agent Client Protocol标准化支持 | 🚧 开发中 | v0.0.1 |
+| **ACP协议** | `libs/acp` | Python | Agent Client Protocol标准化支持 | ✅ 完整 | v0.0.1 |
 
 ## ✨ 最新功能亮点
 
-### 1. ACP 协议支持 (新增)
+### 1. Memory 中间件 (新增)
+- **持久化记忆系统** - 跨会话保持Agent记忆和上下文
+- **分层存储** - 支持不同级别的记忆持久化
+- **记忆检索** - 智能检索相关记忆片段
+- **异步支持** - 完整的异步API支持
+- **与FilesystemBackend集成** - 利用后端系统实现持久化
+
+### 2. Skills 中间件 (新增)
+- **技能插件系统** - 标准化的技能管理和执行
+- **动态加载** - 运行时动态加载和卸载技能
+- **技能发现** - 自动发现可用技能
+- **工具集成** - 技能自动转换为LangChain工具
+- **技能隔离** - 每个技能在独立环境中执行
+
+### 3. Ralph 模式示例 (新增)
+- **自主循环代理** - 基于Geoff Huntley的Ralph模式
+- **上下文简化** - 每次迭代使用全新上下文
+- **文件系统记忆** - 通过文件系统跟踪进度
+- **无限迭代** - 持续执行直到满意
+- **灵活配置** - 支持迭代限制和模型选择
+
+### 4. CLI Textual UI 重构 (重大更新)
+- **Textual框架** - 基于Textual的现代化终端UI
+- **组件化设计** - 11个可复用UI组件
+  - `approval` - 审批组件
+  - `autocomplete` - 自动完成
+  - `chat_input` - 聊天输入
+  - `diff` - 差异显示
+  - `history` - 历史记录
+  - `loading` - 加载动画
+  - `messages` - 消息显示
+  - `status` - 状态显示
+  - `tool_renderers` - 工具渲染
+  - `tool_widgets` - 工具组件
+  - `welcome` - 欢迎界面
+- **会话管理** - 持久化会话状态和历史
+- **样式系统** - CSS样式的主题定制
+
+### 5. ACP 协议支持
 - **Agent Client Protocol 集成** - 标准化的Agent客户端通信协议
 - **上下文管理** - 统一的上下文传递和管理机制
 - **Python 3.14+ 支持** - 面向未来的Python版本兼容
 - **独立服务器** - `deepacp` 命令行工具用于启动ACP服务器
 
-### 2. CLI 图像处理功能 (新增)
+### 6. CLI 图像处理功能
 - **剪贴板图像读取** - 支持从剪贴板直接粘贴图像（macOS）
 - **多格式支持** - PNG、JPEG、TIFF等格式自动转换
 - **多模态消息** - 与LangChain多模态消息格式完全兼容
 - **智能降级** - 优先使用pngpaste，降级到osascript内置工具
 
-### 3. Harbor 评估集成
+### 7. Harbor 评估集成
 - **Terminal Bench 2.0 支持** - 在90+个挑战性任务上评估Agent性能
 - **多沙箱环境** - Docker、Daytona、Modal、Runloop等环境支持
 - **LangSmith集成** - 完整的轨迹追踪和性能分析
 - **奖励评分** - 0.0-1.0范围的量化评估
 
-### 4. 全面异步支持
+### 8. 全面异步支持
 - **异步后端协议** - 所有后端操作支持async/await
 - **并发执行** - 子代理可并行执行任务
 - **非阻塞I/O** - 文件操作和命令执行不阻塞主流程
 - **性能提升** - 显著降低响应延迟
-
-### 5. CLI工具增强
-- **交互式界面** - Rich支持的精美终端界面
-- **技能系统** - 可扩展的技能插件架构
-- **多沙箱支持** - 集成Daytona、Modal、Runloop
-- **代理管理** - 多代理创建和状态管理
 
 ## 运行与开发
 
@@ -114,7 +168,7 @@ graph TD
 git clone https://github.com/langchain-ai/deepagents-langchain
 cd deepagents-langchain
 
-# 安装核心库 (v0.3.1)
+# 安装核心库 (v0.3.5)
 cd libs/deepagents
 pip install -e .
 
@@ -243,14 +297,16 @@ ruff format libs/acp/
 
 ### 测试覆盖范围
 
-- `libs/deepagents/tests/` - 核心库测试（25+文件）
-  - 异步后端测试：5个专门的异步测试文件
-  - 中间件测试：包含异步版本
+- `libs/deepagents/tests/` - 核心库测试（30+文件）
+  - 异步后端测试：专门的异步测试文件
+  - 中间件测试：Memory中间件、Skills中间件、SubAgent中间件
   - 集成测试：完整工作流验证
-- `libs/deepagents-cli/tests/` - CLI工具测试（10+文件）
+  - 端到端测试：端到端Agent流程测试
+  - 子代理测试：专门的子代理测试套件
+- `libs/deepagents-cli/tests/` - CLI工具测试（15+文件）
   - 单元测试：命令处理、配置管理、图像处理
+  - Widget测试：自动完成、会话管理等
   - 集成测试：CLI交互和沙箱操作
-  - 基准测试：任务执行性能
 - `libs/harbor/tests/` - Harbor集成测试
   - 单元测试：导入和基础功能
   - 集成测试：与Harbor框架的完整集成
@@ -303,6 +359,10 @@ DeepAgents 专为以下场景优化：
 ### 核心概念
 
 - **Middleware（中间件）** - 为Agent添加工具和行为
+  - **FilesystemMiddleware** - 文件系统操作
+  - **SubAgentMiddleware** - 子代理委派和管理
+  - **MemoryMiddleware** - 持久化记忆系统
+  - **SkillsMiddleware** - 技能插件系统
 - **Backends（后端）** - 控制文件存储和执行环境
 - **Subagents（子代理）** - 隔离的专业化代理
 - **Memory（记忆）** - 跨会话持久化存储
@@ -310,6 +370,7 @@ DeepAgents 专为以下场景优化：
 - **Harbor** - 第三方评估框架集成
 - **ACP** - Agent Client Protocol标准化通信
 - **多模态支持** - 图像处理和多模态消息
+- **Ralph模式** - 自主循环代理模式
 
 ### 异步编程最佳实践
 
@@ -343,6 +404,19 @@ DeepAgents 专为以下场景优化：
 - **[LangSmith追踪](https://smith.langchain.com)**
 
 ## 变更记录 (Changelog)
+
+### 2026-01-10 - 重大更新 (v0.3.5)
+- 🎉 **版本更新** - 核心库升级至 v0.3.5
+- 🧠 **Memory 中间件** - 新增持久化记忆系统，支持跨会话记忆
+- 🔌 **Skills 中间件** - 新增技能插件系统，支持动态加载和技能发现
+- 🔄 **Ralph 模式** - 新增自主循环代理模式示例
+- 🖥️ **CLI Textual UI 重构** - 完整的现代化终端UI系统
+  - 11个可复用UI组件
+  - 会话管理系统
+  - CSS样式主题定制
+- 🧪 **测试增强** - 新增Memory、Skills、子代理等测试套件
+- 📦 **依赖管理** - CLI依赖核心库v0.2.8→需要升级
+- 🔧 **代码质量** - 启用严格lint检查和ratchet
 
 ### 2025-12-24 - 项目文档更新
 - 📚 **上下文文档更新** - 更新项目版本信息（核心库v0.3.1，CLI v0.0.12）
