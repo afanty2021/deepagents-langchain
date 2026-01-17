@@ -44,7 +44,7 @@ agent = create_deep_agent(
 result = agent.invoke({"messages": [{"role": "user", "content": "What is LangGraph?"}]})
 ```
 
-The agent created with `create_deep_agent` is compiled [LangGraph](https://docs.langchain.com/oss/python/langgraph/overview) `StateGraph`, so it can be used with streaming, human-in-the-loop, memory, or Studio just like any LangGraph agent. See our [quickstarts repo](https://github.com/langchain-ai/deepagents-quickstarts) for more examples.
+The agent created with `create_deep_agent` is a compiled [LangGraph](https://docs.langchain.com/oss/python/langgraph/overview) `StateGraph`, so it can be used with streaming, human-in-the-loop, memory, or Studio just like any LangGraph agent. See our [quickstarts repo](https://github.com/langchain-ai/deepagents-quickstarts) for more examples.
 
 ## Customizing Deep Agents
 
@@ -52,7 +52,7 @@ There are several parameters you can pass to [`create_deep_agent`](https://refer
 
 ### `model`
 
-By default, `deepagents` uses `claude-sonnet-4-5-20250929`. You can customize this by passing any [LangChain model object](https://python.langchain.com/docs/integrations/chat/).
+By default, `deepagents` uses `claude-sonnet-4-5-20250929`. You can customize this by passing any [LangChain model object](https://docs.langchain.com/oss/python/integrations/providers/overview).
 
 ```python
 from langchain.chat_models import init_chat_model
